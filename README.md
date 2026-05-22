@@ -1,16 +1,31 @@
 # StageFlow - Protótipo Mobile
 
-Protótipo de baixa fidelidade navegável para o StageFlow, voltado para produtores de eventos.
+Protótipo de baixa fidelidade navegável do **StageFlow**, uma solução pensada para produtores de eventos e equipes de backstage que precisam coordenar palco, comunicação, alertas e tarefas em tempo real.
 
-## Como publicar no GitHub Pages
+## Sobre o Produto
 
-1. Crie um repositório no GitHub chamado `stageflow-prototipo`.
-2. Envie os arquivos desta pasta para o repositório.
-3. Vá em `Settings > Pages`.
-4. Em `Build and deployment`, escolha `Deploy from a branch`.
-5. Selecione a branch `main` e a pasta `/root`.
-6. Salve.
+O StageFlow centraliza a operação de eventos ao vivo em uma interface simples para mobile. A proposta é reduzir ruídos de comunicação, organizar responsabilidades e dar visibilidade rápida ao produtor sobre o que está acontecendo durante a execução do evento.
 
-O link ficará parecido com:
+## Objetivo do Protótipo
 
-`https://mihlamonteiro.github.io/stageflow-prototipo/`
+Este protótipo apresenta o fluxo principal do produto em baixa fidelidade, priorizando navegação, organização das telas e funcionalidades essenciais. Ele foi construído para validar a experiência de uso antes de avançar para um design visual mais refinado.
+
+## Funcionalidades Representadas
+
+- Listagem e criação de eventos
+- Dashboard operacional do evento
+- Alertas críticos com confirmação de leitura
+- Checklist de palco
+- Chat em tempo real com canais da equipe e conversas privadas
+- Visualização de equipes por setor
+- Indicação de modo offline e sincronização
+
+## Público-Alvo
+
+Produtores de eventos, coordenadores de palco, técnicos de som e luz, roadies, assistentes de produção e equipes que trabalham nos bastidores de shows, festivais e eventos culturais.
+
+## Acesso
+
+Protótipo publicado em:
+
+https://mihlamonteiro.github.io/stageflow-prototipo/
