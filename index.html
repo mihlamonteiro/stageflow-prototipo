@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StageFlow - Protótipo Mobile Baixa Fidelidade</title>
+  <style>
+    :root {
+      --bg: #e8eaed;
+      --paper: #ffffff;
+      --ink: #14191f;
+      --muted: #646b75;
+      --line: #c9cdd4;
+      --teal: #05aaa6;
+      --dark: #050a11;
+      --warn: #df3d33;
+      --ok: #248b42;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .wrap {
+      width: min(100vw, 430px);
+      padding: 16px;
+    }
+
+    .phone {
+      position: relative;
+      width: 390px;
+      max-width: calc(100vw - 32px);
+      height: min(844px, calc(100vh - 32px));
+      min-height: 720px;
+      margin: 0 auto;
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid #b8bdc7;
+      border-radius: 28px;
+      box-shadow: 0 18px 60px rgba(10, 20, 30, .18);
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+      padding: 50px 24px 96px;
+      background: var(--paper);
+    }
+
+    .screen.active { display: block; }
+    .screen.with-back { padding-top: 84px; }
+    .dark { background: var(--dark); color: white; }
+    h1 { margin: 0 0 8px; font-size: 24px; line-height: 1.2; }
+    h2 { margin: 28px 0 14px; font-size: 18px; }
+    p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .dark p { color: #d2d8df; }
+
+    .logo {
+      margin: 78px 0 32px;
+      font-size: 44px;
+      letter-spacing: 0;
+      font-weight: 300;
+      border-bottom: 2px solid var(--teal);
+      padding-bottom: 12px;
+    }
+    .logo span { color: var(--teal); }
+
+    .btn {
+      width: 100%;
+      height: 52px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--teal);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+    .btn.warn { background: var(--warn); }
+    .btn.ghost {
+      background: white;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .top-action {
+      width: auto;
+      height: 44px;
+      padding: 0 14px;
+      margin: 18px 0 8px;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .header-copy {
+      min-width: 0;
+    }
+
+    .header-row .top-action {
+      flex: 0 0 auto;
+      margin-top: 0;
+    }
+
+    .back {
+      position: absolute;
+      top: 32px;
+      left: 24px;
+      width: auto;
+      height: 34px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin: 14px 0;
+      background: white;
+      cursor: pointer;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .badge {
+      float: right;
+      min-width: 68px;
+      padding: 5px 8px;
+      border: 1px solid var(--teal);
+      border-radius: 999px;
+      color: var(--teal);
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      background: #eefafa;
+    }
+
+    .offline {
+      margin-top: 26px;
+      padding: 12px 14px;
+      border: 1px solid var(--teal);
+      border-radius: 8px;
+      color: var(--teal);
+      background: #eefafa;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .field {
+      height: 46px;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      margin: 8px 0 20px;
+      font-size: 13px;
+    }
+
+    .textarea { height: 108px; }
+    .chips {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 10px 0 28px;
+    }
+    .chip {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f1f3f6;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .form-grid .field {
+      margin-bottom: 0;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin: 14px 0 22px;
+      background: #f8f9fb;
+    }
+
+    .switch {
+      width: 46px;
+      height: 26px;
+      border-radius: 999px;
+      background: var(--teal);
+      padding: 3px;
+    }
+
+    .switch::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 20px;
+      margin-left: auto;
+      border-radius: 50%;
+      background: white;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 42px;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    .status-ok { color: var(--ok); font-weight: 700; }
+    .status-warn { color: var(--warn); font-weight: 700; }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      height: 54px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 18px;
+    }
+    .box {
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+    }
+    .box.done { background: var(--teal); border-color: var(--teal); }
+
+    .chat-list .card {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #eefafa;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .chat-meta h3 {
+      margin-bottom: 4px;
+    }
+
+    .unread {
+      min-width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--warn);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .message {
+      max-width: 82%;
+      padding: 10px 12px;
+      margin: 10px 0;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink);
+      background: #f5f6f8;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .message.me {
+      margin-left: auto;
+      border-color: var(--teal);
+      background: #eefafa;
+    }
+
+    .composer {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 96px;
+      display: grid;
+      grid-template-columns: 1fr 48px;
+      gap: 10px;
+    }
+
+    .composer .field {
+      height: 48px;
+      margin: 0;
+    }
+
+    .composer .btn {
+      height: 48px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 80px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--line);
+      background: white;
+    }
+    nav button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    nav button.active { color: var(--teal); font-weight: 800; }
+    nav i {
+      display: block;
+      width: 26px;
+      height: 20px;
+      margin: 0 auto 8px;
+      border-radius: 5px;
+      background: #e8ebef;
+    }
+    nav .active i { background: var(--teal); }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="phone">
+      <section class="screen dark active" id="splash">
+        <div class="logo">Stage<span>Flow</span></div>
+        <h1>Organize palco, equipe e mudanças em tempo real.</h1>
+        <p>Protótipo mobile de baixa fidelidade para produtores de eventos.</p>
+        <div style="height:150px"></div>
+        <button class="btn" data-go="events">Entrar no StageFlow</button>
+        <button class="btn ghost" data-go="dashboard">Ver demo do evento</button>
+      </section>
+
+      <section class="screen with-back" id="events">
+        <button class="back" data-go="splash">← Voltar</button>
+        <div class="header-row">
+          <div class="header-copy">
+            <h1>Meus eventos</h1>
+            <p>Escolha a operação que você vai acompanhar hoje.</p>
+          </div>
+          <button class="btn top-action" data-go="new-event">+ Novo</button>
+        </div>
+        <article class="card" data-go="dashboard">
+          <span class="badge">Ao vivo</span>
+          <h3>Festival Aurora</h3>
+          <p>Hoje, 18:00 · Palco principal · 4 equipes ativas</p>
+        </article>
+        <article class="card">
+          <span class="badge">Prep</span>
+          <h3>Ensaio geral - Recife</h3>
+          <p>Amanhã, 09:00 · Checklist em montagem</p>
+        </article>
+        <article class="card">
+          <span class="badge">Risco</span>
+          <h3>Show privado</h3>
+          <p>Sex, 21:00 · Equipe pendente</p>
+        </article>
+      </section>
+
+      <section class="screen with-back" id="new-event">
+        <button class="back" data-go="events">← Voltar</button>
+        <h1>Novo evento</h1>
+        <p>Cadastre a operação e prepare equipes, canais e checklist inicial.</p>
+        <h2>Dados principais</h2>
+        <div class="field">Nome do evento: Festival Aurora</div>
+        <div class="field">Local: Teatro / Palco principal</div>
+        <div class="form-grid">
+          <div class="field">Data: 22/05</div>
+          <div class="field">Hora: 18:00</div>
+        </div>
+        <h2>Equipes</h2>
+        <div class="chips">
+          <div class="chip">Palco</div>
+          <div class="chip">Som</div>
+          <div class="chip">Luz</div>
+          <div class="chip">Produção</div>
+        </div>
+        <h2>Configuração</h2>
+        <div class="toggle-row">
+          <div>
+            <strong>Ativar modo offline</strong>
+            <p>Salva alertas, chat e checklist sem internet.</p>
+          </div>
+          <span class="switch"></span>
+        </div>
+        <button class="btn" data-go="dashboard">Criar evento</button>
+        <button class="btn ghost" data-go="events">Cancelar</button>
+      </section>
+
+      <section class="screen with-back" id="dashboard">
+        <button class="back" data-go="events">← Voltar</button>
+        <h1>Festival Aurora</h1>
+        <p>Operação ao vivo · sinal instável</p>
+        <div class="offline">Modo offline ativo · 3 itens aguardando sincronização</div>
+        <h2>Status geral</h2>
+        <div class="grid">
+          <article class="card"><span class="badge">75%</span><h3>Palco</h3><p>12/16 tarefas ok</p></article>
+          <article class="card"><span class="badge">Atenção</span><h3>Som e Luz</h3><p>2 alertas críticos</p></article>
+        </div>
+        <article class="card"><span class="badge">18:40</span><h3>Próxima cue</h3><p>Entrada da banda principal em 12 min</p></article>
+        <button class="btn warn" data-go="new-alert">Criar alerta crítico</button>
+        <button class="btn ghost" data-go="checklist">Abrir checklist do palco</button>
+        <h2>Últimas atualizações</h2>
+        <p>18:28 · Iluminação confirmou ajuste de cena<br>18:21 · Roadie marcou bateria como pronta<br>18:17 · Mudança no roteiro aguarda leitura</p>
+        <nav-bar active="home"></nav-bar>
+      </section>
+
+      <section class="screen with-back" id="alerts">
+        <button class="back" data-go="dashboard">← Voltar</button>
+        <div class="header-row">
+          <div class="header-copy">
+            <h1>Alertas</h1>
+            <p>Mudanças importantes com confirmação de leitura.</p>
+          </div>
+          <button class="btn top-action warn" data-go="new-alert">+ Alerta</button>
+        </div>
+        <article class="card" data-go="reading">
+          <span class="badge">Crítico</span>
+          <h3>Roteiro alterado</h3>
+          <p>Banda principal entra 10 min antes. Leitura: 8/12 responsáveis.</p>
+        </article>
+        <article class="card"><span class="badge">Ok</span><h3>Cabo SDI reserva</h3><p>Vídeo solicitou troca no palco B. Leitura: 5/5.</p></article>
+        <article class="card"><span class="badge">Pendente</span><h3>Portão técnico</h3><p>Acesso lateral bloqueado temporariamente. Leitura: 3/7.</p></article>
+        <nav-bar active="alerts"></nav-bar>
+      </section>
+
+      <section class="screen with-back" id="new-alert">
+        <button class="back" data-go="dashboard">← Voltar</button>
+        <h1>Novo alerta</h1>
+        <p>Envie uma mudança para equipes específicas.</p>
+        <h2>Título</h2>
+        <div class="field">Roteiro alterado: entrada antecipada</div>
+        <h2>Mensagem</h2>
+        <div class="field textarea">Banda principal entra às 18:40. Som, luz e palco confirmem leitura.</div>
+        <h2>Equipes</h2>
+        <div class="chips"><div class="chip">Som</div><div class="chip">Luz</div><div class="chip">Roadies</div><div class="chip">Produção</div></div>
+        <button class="btn warn" data-go="reading">Enviar e exigir confirmação</button>
+        <button class="btn ghost" data-go="alerts">Cancelar</button>
+      </section>
+
+      <section class="screen with-back" id="reading">
+        <button class="back" data-go="alerts">← Voltar</button>
+        <h1>Roteiro alterado</h1>
+        <p>Acompanhe leitura por responsável.</p>
+        <article class="card" style="border-color: var(--warn); background:#fff0ef">
+          <h3 style="color:var(--warn)">Crítico · enviado 18:17</h3>
+          <p style="color:var(--ink)">Banda principal entra às 18:40. Som, luz e palco confirmem leitura.</p>
+        </article>
+        <h2>Confirmados</h2>
+        <div class="row"><span>Ana - Luz</span><span class="status-ok">Lido</span></div>
+        <div class="row"><span>Bruno - Som</span><span class="status-ok">Lido</span></div>
+        <div class="row"><span>Caio - Roadie</span><span class="status-ok">Lido</span></div>
+        <h2>Pendentes</h2>
+        <div class="row"><span>Marina - Produção</span><span class="status-warn">Reenviar</span></div>
+        <div class="row"><span>Leo - Palco</span><span class="status-warn">Reenviar</span></div>
+        <button class="btn" data-go="dashboard">Voltar ao dashboard</button>
+      </section>
+
+      <section class="screen with-back" id="checklist">
+        <button class="back" data-go="dashboard">← Voltar</button>
+        <h1>Checklist</h1>
+        <p>Preparação e execução por setor.</p>
+        <div class="check-row"><span class="box done"></span><strong>Backline montado</strong><span class="status-ok">OK</span></div>
+        <div class="check-row"><span class="box done"></span><strong>Microfones testados</strong><span class="status-ok">OK</span></div>
+        <div class="check-row"><span class="box done"></span><strong>Passagem de som</strong><span class="status-ok">OK</span></div>
+        <div class="check-row"><span class="box"></span><span>Cena de luz 1</span><span>Pendente</span></div>
+        <div class="check-row"><span class="box"></span><span>Extintor e cabos seguros</span><span>Pendente</span></div>
+        <button class="btn">Marcar item como concluído</button>
+        <nav-bar active="checklist"></nav-bar>
+      </section>
+
+      <section class="screen with-back" id="chat">
+        <button class="back" data-go="dashboard">← Voltar</button>
+        <h1>Chat</h1>
+        <p>Converse com canais da operação ou chame alguém no privado.</p>
+        <h2>Canais da equipe</h2>
+        <div class="chat-list">
+          <article class="card" data-go="chat-room">
+            <div class="avatar">PA</div>
+            <div class="chat-meta">
+              <h3>Palco</h3>
+              <p>Leo: bateria pronta para troca</p>
+            </div>
+            <span class="unread">2</span>
+          </article>
+          <article class="card" data-go="chat-room">
+            <div class="avatar">SL</div>
+            <div class="chat-meta">
+              <h3>Som e Luz</h3>
+              <p>Ana: cena 1 confirmada</p>
+            </div>
+            <span class="unread">1</span>
+          </article>
+          <article class="card" data-go="chat-room">
+            <div class="avatar">PR</div>
+            <div class="chat-meta">
+              <h3>Produção</h3>
+              <p>Marina: acesso lateral liberado</p>
+            </div>
+            <span></span>
+          </article>
+        </div>
+        <h2>Privado</h2>
+        <div class="chips">
+          <div class="chip" data-go="chat-private">Ana · Luz</div>
+          <div class="chip" data-go="chat-private">Bruno · Som</div>
+          <div class="chip" data-go="chat-private">Leo · Palco</div>
+          <div class="chip" data-go="chat-private">Marina · Produção</div>
+        </div>
+        <nav-bar active="chat"></nav-bar>
+      </section>
+
+      <section class="screen with-back" id="chat-room">
+        <button class="back" data-go="chat">← Voltar</button>
+        <h1>Palco</h1>
+        <p>Canal em tempo real · 6 pessoas online</p>
+        <div class="offline">Mensagens salvas offline e sincronizadas depois.</div>
+        <div class="message"><strong>Leo</strong><br>Bateria reserva já está do lado esquerdo do palco.</div>
+        <div class="message me"><strong>Você</strong><br>Confirma troca logo depois da próxima cue?</div>
+        <div class="message"><strong>Caio</strong><br>Confirmado. Preciso de 2 minutos para liberar passagem.</div>
+        <div class="message me"><strong>Você</strong><br>Ok, vou avisar Som e Luz pelo alerta.</div>
+        <div class="composer">
+          <div class="field">Escrever mensagem...</div>
+          <button class="btn">Enviar</button>
+        </div>
+      </section>
+
+      <section class="screen with-back" id="chat-private">
+        <button class="back" data-go="chat">← Voltar</button>
+        <h1>Ana · Luz</h1>
+        <p>Conversa privada · online agora</p>
+        <div class="message"><strong>Ana</strong><br>Cena 1 está pronta, mas preciso validar o blackout.</div>
+        <div class="message me"><strong>Você</strong><br>Valida agora e me confirma antes da entrada da banda?</div>
+        <div class="message"><strong>Ana</strong><br>Fechado. Te respondo em 2 minutos.</div>
+        <div class="composer">
+          <div class="field">Escrever mensagem...</div>
+          <button class="btn">Enviar</button>
+        </div>
+      </section>
+
+      <section class="screen with-back" id="team">
+        <button class="back" data-go="dashboard">← Voltar</button>
+        <h1>Equipe</h1>
+        <p>Status rápido por setor e pessoa.</p>
+        <article class="card"><span class="badge">Atenção</span><h3>Som · 4 pessoas</h3><p>1 responsável com leitura pendente.</p></article>
+        <article class="card"><span class="badge">Ok</span><h3>Luz · 3 pessoas</h3><p>Todas as tarefas confirmadas.</p></article>
+        <article class="card"><span class="badge">Ok</span><h3>Roadies · 5 pessoas</h3><p>2 tarefas em andamento.</p></article>
+        <article class="card"><span class="badge">Atenção</span><h3>Produção · 6 pessoas</h3><p>Alerta crítico pendente.</p></article>
+        <nav-bar active="team"></nav-bar>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    function go(id) {
+      document.querySelectorAll('.screen').forEach(screen => screen.classList.toggle('active', screen.id === id));
+    }
+    document.addEventListener('click', event => {
+      const target = event.target.closest('[data-go]');
+      if (target) go(target.dataset.go);
+    });
+    customElements.define('nav-bar', class extends HTMLElement {
+      connectedCallback() {
+        const active = this.getAttribute('active');
+        this.innerHTML = `<nav>
+          <button data-go="dashboard" class="${active === 'home' ? 'active' : ''}"><i></i>Início</button>
+          <button data-go="alerts" class="${active === 'alerts' ? 'active' : ''}"><i></i>Alertas</button>
+          <button data-go="chat" class="${active === 'chat' ? 'active' : ''}"><i></i>Chat</button>
+          <button data-go="checklist" class="${active === 'checklist' ? 'active' : ''}"><i></i>Checks</button>
+          <button data-go="team" class="${active === 'team' ? 'active' : ''}"><i></i>Equipe</button>
+        </nav>`;
+      }
+    });
+  </script>
+</body>
+</html>
