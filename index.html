@@ -51,7 +51,7 @@
       position: absolute;
       inset: 0;
       display: none;
-      padding: 50px 24px 150px;
+      padding: 50px 24px 96px;
       background: var(--paper);
       overflow-y: auto;
       scrollbar-width: none;
@@ -70,15 +70,38 @@
     .logo {
       width: 100%;
       margin: 78px 0 48px;
-      padding: 14px 12px 18px;
+      padding: 16px 12px 22px;
       border-radius: 8px;
       background: white;
+      color: #f7f8f8;
+      letter-spacing: 0;
+      font-size: 48px;
+      font-style: italic;
+      font-weight: 800;
+      line-height: 1;
+      text-align: center;
+      text-shadow:
+        -1px -1px 0 #101820,
+        1px -1px 0 #101820,
+        -1px 1px 0 #101820,
+        1px 1px 0 #101820;
     }
-
-    .logo img {
+    .logo span {
+      color: var(--teal);
+      text-shadow:
+        -1px -1px 0 #0b4d4d,
+        1px -1px 0 #0b4d4d,
+        -1px 1px 0 #0b4d4d,
+        1px 1px 0 #0b4d4d;
+    }
+    .logo::after {
+      content: "";
       display: block;
-      width: 100%;
-      height: auto;
+      width: 78px;
+      height: 4px;
+      margin: 12px auto 0;
+      background: var(--teal);
+      border: 1px solid #0b4d4d;
     }
 
     .btn {
@@ -373,13 +396,11 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 86px;
+      height: 80px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       border-top: 1px solid var(--line);
       background: white;
-      z-index: 20;
-      box-shadow: 0 -4px 18px rgba(10, 20, 30, .06);
     }
     nav button {
       border: 0;
@@ -388,14 +409,13 @@
       font-size: 12px;
       font-weight: 500;
       cursor: pointer;
-      padding: 9px 0 7px;
     }
     nav button.active { color: var(--teal); font-weight: 800; }
     nav i {
       display: block;
       width: 26px;
       height: 20px;
-      margin: 0 auto 7px;
+      margin: 0 auto 8px;
       border-radius: 5px;
       background: #e8ebef;
     }
@@ -406,9 +426,7 @@
   <main class="wrap">
     <div class="phone">
       <section class="screen dark active" id="splash">
-        <div class="logo">
-          <img src="stageflow-logo.png" alt="StageFlow">
-        </div>
+        <div class="logo">Stage<span>Flow</span></div>
         <h1>Organize palco, equipe e mudanças em tempo real.</h1>
         <div style="height:180px"></div>
         <button class="btn" data-go="events">Entrar no StageFlow</button>
