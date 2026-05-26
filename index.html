@@ -51,7 +51,7 @@
       position: absolute;
       inset: 0;
       display: none;
-      padding: 50px 24px 96px;
+      padding: 50px 24px 150px;
       background: var(--paper);
       overflow-y: auto;
       scrollbar-width: none;
@@ -61,6 +61,7 @@
 
     .screen.active { display: block; }
     .screen.with-back { padding-top: 84px; }
+    #dashboard { padding-bottom: 176px; }
     .dark { background: var(--dark); color: white; }
     h1 { margin: 0 0 10px; font-size: 27px; line-height: 1.2; }
     h2 { margin: 28px 0 14px; font-size: 20px; }
@@ -189,6 +190,18 @@
       background: #eefafa;
       font-size: 13px;
       font-weight: 700;
+    }
+
+    .updates {
+      margin-bottom: 22px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8f9fb;
+    }
+
+    .updates h2 {
+      margin-top: 0;
     }
 
     .grid {
@@ -485,8 +498,10 @@
         <article class="card"><span class="badge">18:40</span><h3>Próxima cue</h3><p>Entrada da banda principal em 12 min</p></article>
         <button class="btn warn" data-go="new-alert">Criar alerta crítico</button>
         <button class="btn ghost" data-go="checklist">Abrir checklist do palco</button>
-        <h2>Últimas atualizações</h2>
-        <p>18:28 · Iluminação confirmou ajuste de cena<br>18:21 · Roadie marcou bateria como pronta<br>18:17 · Mudança no roteiro aguarda leitura</p>
+        <div class="updates">
+          <h2>Últimas atualizações</h2>
+          <p>18:28 · Iluminação confirmou ajuste de cena<br>18:21 · Roadie marcou bateria como pronta<br>18:17 · Mudança no roteiro aguarda leitura</p>
+        </div>
         <nav-bar active="home"></nav-bar>
       </section>
 
