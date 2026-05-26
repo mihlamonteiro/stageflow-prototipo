@@ -53,25 +53,56 @@
       display: none;
       padding: 50px 24px 96px;
       background: var(--paper);
+      overflow-y: auto;
+      scrollbar-width: none;
     }
+
+    .screen::-webkit-scrollbar { display: none; }
 
     .screen.active { display: block; }
     .screen.with-back { padding-top: 84px; }
     .dark { background: var(--dark); color: white; }
-    h1 { margin: 0 0 8px; font-size: 24px; line-height: 1.2; }
-    h2 { margin: 28px 0 14px; font-size: 18px; }
-    p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    h1 { margin: 0 0 10px; font-size: 27px; line-height: 1.2; }
+    h2 { margin: 28px 0 14px; font-size: 20px; }
+    p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.4; }
     .dark p { color: #d2d8df; }
 
     .logo {
-      margin: 78px 0 32px;
-      font-size: 44px;
+      width: 100%;
+      margin: 78px 0 48px;
+      padding: 16px 12px 22px;
+      border-radius: 8px;
+      background: white;
+      color: #f7f8f8;
       letter-spacing: 0;
-      font-weight: 300;
-      border-bottom: 2px solid var(--teal);
-      padding-bottom: 12px;
+      font-size: 48px;
+      font-style: italic;
+      font-weight: 800;
+      line-height: 1;
+      text-align: center;
+      text-shadow:
+        -1px -1px 0 #101820,
+        1px -1px 0 #101820,
+        -1px 1px 0 #101820,
+        1px 1px 0 #101820;
     }
-    .logo span { color: var(--teal); }
+    .logo span {
+      color: var(--teal);
+      text-shadow:
+        -1px -1px 0 #0b4d4d,
+        1px -1px 0 #0b4d4d,
+        -1px 1px 0 #0b4d4d,
+        1px 1px 0 #0b4d4d;
+    }
+    .logo::after {
+      content: "";
+      display: block;
+      width: 78px;
+      height: 4px;
+      margin: 12px auto 0;
+      background: var(--teal);
+      border: 1px solid #0b4d4d;
+    }
 
     .btn {
       width: 100%;
@@ -81,7 +112,7 @@
       background: var(--teal);
       color: white;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 15px;
       margin-top: 12px;
       cursor: pointer;
     }
@@ -126,12 +157,13 @@
       border-radius: 8px;
       background: white;
       color: var(--ink);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
     }
 
     .card {
+      position: relative;
       padding: 14px;
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -142,19 +174,27 @@
 
     .card h3 {
       margin: 0 0 8px;
-      font-size: 15px;
+      padding-right: 88px;
+      font-size: 17px;
       line-height: 1.2;
     }
 
+    .card p {
+      padding-right: 88px;
+      overflow-wrap: anywhere;
+    }
+
     .badge {
-      float: right;
+      position: absolute;
+      top: 14px;
+      right: 14px;
       min-width: 68px;
       padding: 5px 8px;
       border: 1px solid var(--teal);
       border-radius: 999px;
       color: var(--teal);
       text-align: center;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       background: #eefafa;
     }
@@ -166,7 +206,7 @@
       border-radius: 8px;
       color: var(--teal);
       background: #eefafa;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
     }
 
@@ -184,7 +224,7 @@
       border-radius: 8px;
       color: var(--muted);
       margin: 8px 0 20px;
-      font-size: 13px;
+      font-size: 15px;
     }
 
     .textarea { height: 108px; }
@@ -200,7 +240,7 @@
       border-radius: 8px;
       background: #f1f3f6;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 15px;
     }
 
     .form-grid {
@@ -249,7 +289,7 @@
       justify-content: space-between;
       min-height: 42px;
       border-bottom: 1px solid var(--line);
-      font-size: 14px;
+      font-size: 15px;
     }
     .status-ok { color: var(--ok); font-weight: 700; }
     .status-warn { color: var(--warn); font-weight: 700; }
@@ -287,12 +327,17 @@
       border-radius: 50%;
       background: #eefafa;
       color: var(--teal);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
     }
 
     .chat-meta h3 {
       margin-bottom: 4px;
+    }
+
+    .chat-list .card h3,
+    .chat-list .card p {
+      padding-right: 0;
     }
 
     .unread {
@@ -303,7 +348,7 @@
       border-radius: 999px;
       background: var(--warn);
       color: white;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 800;
     }
 
@@ -315,8 +360,8 @@
       border-radius: 12px;
       color: var(--ink);
       background: #f5f6f8;
-      font-size: 13px;
-      line-height: 1.35;
+      font-size: 15px;
+      line-height: 1.4;
     }
 
     .message.me {
@@ -361,7 +406,7 @@
       border: 0;
       background: transparent;
       color: var(--muted);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
       cursor: pointer;
     }
@@ -383,8 +428,7 @@
       <section class="screen dark active" id="splash">
         <div class="logo">Stage<span>Flow</span></div>
         <h1>Organize palco, equipe e mudanças em tempo real.</h1>
-        <p>Protótipo mobile de baixa fidelidade para produtores de eventos.</p>
-        <div style="height:150px"></div>
+        <div style="height:180px"></div>
         <button class="btn" data-go="events">Entrar no StageFlow</button>
         <button class="btn ghost" data-go="dashboard">Ver demo do evento</button>
       </section>
