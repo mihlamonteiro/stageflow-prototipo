@@ -61,7 +61,18 @@
 
     .screen.active { display: block; }
     .screen.with-back { padding-top: 84px; }
-    #dashboard { padding-bottom: 50px; }
+    .screen.has-nav {
+      padding: 0;
+      overflow: hidden;
+    }
+    .screen.has-nav .scroll-area {
+      position: absolute;
+      inset: 0 0 86px;
+      overflow-y: auto;
+      padding: 84px 24px 26px;
+      scrollbar-width: none;
+    }
+    .screen.has-nav .scroll-area::-webkit-scrollbar { display: none; }
     .dark { background: var(--dark); color: white; }
     h1 { margin: 0 0 10px; font-size: 27px; line-height: 1.2; }
     h2 { margin: 28px 0 14px; font-size: 20px; }
@@ -386,14 +397,17 @@
     }
 
     nav {
-      position: static;
-      height: 76px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 86px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
       background: white;
-      margin: 24px -24px 0;
+      z-index: 10;
+      box-shadow: 0 -4px 18px rgba(10, 20, 30, .06);
     }
     nav button {
       border: 0;
@@ -484,42 +498,46 @@
         <button class="btn ghost" data-go="events">Cancelar</button>
       </section>
 
-      <section class="screen with-back" id="dashboard">
-        <button class="back" data-go="events">← Voltar</button>
-        <h1>Festival Aurora</h1>
-        <p>Operação ao vivo · sinal instável</p>
-        <div class="offline">Modo offline ativo · 3 itens aguardando sincronização</div>
-        <h2>Status geral</h2>
-        <div class="grid">
-          <article class="card"><span class="badge">75%</span><h3>Palco</h3><p>12/16 tarefas ok</p></article>
-          <article class="card"><span class="badge">Atenção</span><h3>Som e Luz</h3><p>2 alertas críticos</p></article>
+      <section class="screen has-nav" id="dashboard">
+        <div class="scroll-area">
+          <button class="back" data-go="events">← Voltar</button>
+          <h1>Festival Aurora</h1>
+          <p>Operação ao vivo · sinal instável</p>
+          <div class="offline">Modo offline ativo · 3 itens aguardando sincronização</div>
+          <h2>Status geral</h2>
+          <div class="grid">
+            <article class="card"><span class="badge">75%</span><h3>Palco</h3><p>12/16 tarefas ok</p></article>
+            <article class="card"><span class="badge">Atenção</span><h3>Som e Luz</h3><p>2 alertas críticos</p></article>
+          </div>
+          <article class="card"><span class="badge">18:40</span><h3>Próxima cue</h3><p>Entrada da banda principal em 12 min</p></article>
+          <div class="updates">
+            <h2>Últimas atualizações</h2>
+            <p>18:28 · Iluminação confirmou ajuste de cena<br>18:21 · Roadie marcou bateria como pronta<br>18:17 · Mudança no roteiro aguarda leitura</p>
+          </div>
+          <button class="btn warn" data-go="new-alert">Criar alerta crítico</button>
+          <button class="btn ghost" data-go="checklist">Abrir checklist do palco</button>
         </div>
-        <article class="card"><span class="badge">18:40</span><h3>Próxima cue</h3><p>Entrada da banda principal em 12 min</p></article>
-        <div class="updates">
-          <h2>Últimas atualizações</h2>
-          <p>18:28 · Iluminação confirmou ajuste de cena<br>18:21 · Roadie marcou bateria como pronta<br>18:17 · Mudança no roteiro aguarda leitura</p>
-        </div>
-        <button class="btn warn" data-go="new-alert">Criar alerta crítico</button>
-        <button class="btn ghost" data-go="checklist">Abrir checklist do palco</button>
         <nav-bar active="home"></nav-bar>
       </section>
 
-      <section class="screen with-back" id="alerts">
-        <button class="back" data-go="dashboard">← Voltar</button>
-        <div class="header-row">
-          <div class="header-copy">
-            <h1>Alertas</h1>
-            <p>Mudanças importantes com confirmação de leitura.</p>
+      <section class="screen has-nav" id="alerts">
+        <div class="scroll-area">
+          <button class="back" data-go="dashboard">← Voltar</button>
+          <div class="header-row">
+            <div class="header-copy">
+              <h1>Alertas</h1>
+              <p>Mudanças importantes com confirmação de leitura.</p>
+            </div>
+            <button class="btn top-action warn" data-go="new-alert">+ Alerta</button>
           </div>
-          <button class="btn top-action warn" data-go="new-alert">+ Alerta</button>
+          <article class="card" data-go="reading">
+            <span class="badge">Crítico</span>
+            <h3>Roteiro alterado</h3>
+            <p>Banda principal entra 10 min antes. Leitura: 8/12 responsáveis.</p>
+          </article>
+          <article class="card"><span class="badge">Ok</span><h3>Cabo SDI reserva</h3><p>Vídeo solicitou troca no palco B. Leitura: 5/5.</p></article>
+          <article class="card"><span class="badge">Pendente</span><h3>Portão técnico</h3><p>Acesso lateral bloqueado temporariamente. Leitura: 3/7.</p></article>
         </div>
-        <article class="card" data-go="reading">
-          <span class="badge">Crítico</span>
-          <h3>Roteiro alterado</h3>
-          <p>Banda principal entra 10 min antes. Leitura: 8/12 responsáveis.</p>
-        </article>
-        <article class="card"><span class="badge">Ok</span><h3>Cabo SDI reserva</h3><p>Vídeo solicitou troca no palco B. Leitura: 5/5.</p></article>
-        <article class="card"><span class="badge">Pendente</span><h3>Portão técnico</h3><p>Acesso lateral bloqueado temporariamente. Leitura: 3/7.</p></article>
         <nav-bar active="alerts"></nav-bar>
       </section>
 
@@ -555,56 +573,60 @@
         <button class="btn" data-go="dashboard">Voltar ao dashboard</button>
       </section>
 
-      <section class="screen with-back" id="checklist">
-        <button class="back" data-go="dashboard">← Voltar</button>
-        <h1>Checklist</h1>
-        <p>Preparação e execução por setor.</p>
-        <div class="check-row"><span class="box done"></span><strong>Backline montado</strong><span class="status-ok">OK</span></div>
-        <div class="check-row"><span class="box done"></span><strong>Microfones testados</strong><span class="status-ok">OK</span></div>
-        <div class="check-row"><span class="box done"></span><strong>Passagem de som</strong><span class="status-ok">OK</span></div>
-        <div class="check-row"><span class="box"></span><span>Cena de luz 1</span><span>Pendente</span></div>
-        <div class="check-row"><span class="box"></span><span>Extintor e cabos seguros</span><span>Pendente</span></div>
-        <button class="btn">Marcar item como concluído</button>
+      <section class="screen has-nav" id="checklist">
+        <div class="scroll-area">
+          <button class="back" data-go="dashboard">← Voltar</button>
+          <h1>Checklist</h1>
+          <p>Preparação e execução por setor.</p>
+          <div class="check-row"><span class="box done"></span><strong>Backline montado</strong><span class="status-ok">OK</span></div>
+          <div class="check-row"><span class="box done"></span><strong>Microfones testados</strong><span class="status-ok">OK</span></div>
+          <div class="check-row"><span class="box done"></span><strong>Passagem de som</strong><span class="status-ok">OK</span></div>
+          <div class="check-row"><span class="box"></span><span>Cena de luz 1</span><span>Pendente</span></div>
+          <div class="check-row"><span class="box"></span><span>Extintor e cabos seguros</span><span>Pendente</span></div>
+          <button class="btn">Marcar item como concluído</button>
+        </div>
         <nav-bar active="checklist"></nav-bar>
       </section>
 
-      <section class="screen with-back" id="chat">
-        <button class="back" data-go="dashboard">← Voltar</button>
-        <h1>Chat</h1>
-        <p>Converse com canais da operação ou chame alguém no privado.</p>
-        <h2>Canais da equipe</h2>
-        <div class="chat-list">
-          <article class="card" data-go="chat-room">
-            <div class="avatar">PA</div>
-            <div class="chat-meta">
-              <h3>Palco</h3>
-              <p>Leo: bateria pronta para troca</p>
-            </div>
-            <span class="unread">2</span>
-          </article>
-          <article class="card" data-go="chat-room">
-            <div class="avatar">SL</div>
-            <div class="chat-meta">
-              <h3>Som e Luz</h3>
-              <p>Ana: cena 1 confirmada</p>
-            </div>
-            <span class="unread">1</span>
-          </article>
-          <article class="card" data-go="chat-room">
-            <div class="avatar">PR</div>
-            <div class="chat-meta">
-              <h3>Produção</h3>
-              <p>Marina: acesso lateral liberado</p>
-            </div>
-            <span></span>
-          </article>
-        </div>
-        <h2>Privado</h2>
-        <div class="chips">
-          <div class="chip" data-go="chat-private">Ana · Luz</div>
-          <div class="chip" data-go="chat-private">Bruno · Som</div>
-          <div class="chip" data-go="chat-private">Leo · Palco</div>
-          <div class="chip" data-go="chat-private">Marina · Produção</div>
+      <section class="screen has-nav" id="chat">
+        <div class="scroll-area">
+          <button class="back" data-go="dashboard">← Voltar</button>
+          <h1>Chat</h1>
+          <p>Converse com canais da operação ou chame alguém no privado.</p>
+          <h2>Canais da equipe</h2>
+          <div class="chat-list">
+            <article class="card" data-go="chat-room">
+              <div class="avatar">PA</div>
+              <div class="chat-meta">
+                <h3>Palco</h3>
+                <p>Leo: bateria pronta para troca</p>
+              </div>
+              <span class="unread">2</span>
+            </article>
+            <article class="card" data-go="chat-room">
+              <div class="avatar">SL</div>
+              <div class="chat-meta">
+                <h3>Som e Luz</h3>
+                <p>Ana: cena 1 confirmada</p>
+              </div>
+              <span class="unread">1</span>
+            </article>
+            <article class="card" data-go="chat-room">
+              <div class="avatar">PR</div>
+              <div class="chat-meta">
+                <h3>Produção</h3>
+                <p>Marina: acesso lateral liberado</p>
+              </div>
+              <span></span>
+            </article>
+          </div>
+          <h2>Privado</h2>
+          <div class="chips">
+            <div class="chip" data-go="chat-private">Ana · Luz</div>
+            <div class="chip" data-go="chat-private">Bruno · Som</div>
+            <div class="chip" data-go="chat-private">Leo · Palco</div>
+            <div class="chip" data-go="chat-private">Marina · Produção</div>
+          </div>
         </div>
         <nav-bar active="chat"></nav-bar>
       </section>
@@ -637,14 +659,16 @@
         </div>
       </section>
 
-      <section class="screen with-back" id="team">
-        <button class="back" data-go="dashboard">← Voltar</button>
-        <h1>Equipe</h1>
-        <p>Status rápido por setor e pessoa.</p>
-        <article class="card"><span class="badge">Atenção</span><h3>Som · 4 pessoas</h3><p>1 responsável com leitura pendente.</p></article>
-        <article class="card"><span class="badge">Ok</span><h3>Luz · 3 pessoas</h3><p>Todas as tarefas confirmadas.</p></article>
-        <article class="card"><span class="badge">Ok</span><h3>Roadies · 5 pessoas</h3><p>2 tarefas em andamento.</p></article>
-        <article class="card"><span class="badge">Atenção</span><h3>Produção · 6 pessoas</h3><p>Alerta crítico pendente.</p></article>
+      <section class="screen has-nav" id="team">
+        <div class="scroll-area">
+          <button class="back" data-go="dashboard">← Voltar</button>
+          <h1>Equipe</h1>
+          <p>Status rápido por setor e pessoa.</p>
+          <article class="card"><span class="badge">Atenção</span><h3>Som · 4 pessoas</h3><p>1 responsável com leitura pendente.</p></article>
+          <article class="card"><span class="badge">Ok</span><h3>Luz · 3 pessoas</h3><p>Todas as tarefas confirmadas.</p></article>
+          <article class="card"><span class="badge">Ok</span><h3>Roadies · 5 pessoas</h3><p>2 tarefas em andamento.</p></article>
+          <article class="card"><span class="badge">Atenção</span><h3>Produção · 6 pessoas</h3><p>Alerta crítico pendente.</p></article>
+        </div>
         <nav-bar active="team"></nav-bar>
       </section>
     </div>
