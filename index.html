@@ -391,19 +391,38 @@
     }
 
     .chat-thread {
-      padding-bottom: 130px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .chat-content {
+      position: absolute;
+      top: 84px;
+      left: 24px;
+      right: 24px;
+      bottom: 86px;
+      overflow-y: auto;
+      padding-bottom: 18px;
+      scrollbar-width: none;
+    }
+
+    .chat-content::-webkit-scrollbar {
+      display: none;
     }
 
     .composer {
       position: absolute;
-      left: 24px;
-      right: 24px;
-      bottom: 24px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 86px;
       display: grid;
       grid-template-columns: minmax(0, 1fr) 64px;
       gap: 10px;
-      padding-top: 12px;
+      padding: 12px 24px 24px;
+      border-top: 1px solid var(--line);
       background: white;
+      box-shadow: 0 -4px 18px rgba(10, 20, 30, .06);
     }
 
     .composer .field {
@@ -654,13 +673,15 @@
 
       <section class="screen with-back chat-thread" id="chat-room">
         <button class="back" data-go="chat">← Voltar</button>
-        <h1>Palco</h1>
-        <p>Canal em tempo real · 6 pessoas online</p>
-        <div class="offline">Mensagens salvas offline e sincronizadas depois.</div>
-        <div class="message"><strong>Leo</strong><br>Bateria reserva já está do lado esquerdo do palco.</div>
-        <div class="message me"><strong>Você</strong><br>Confirma troca logo depois da próxima cue?</div>
-        <div class="message"><strong>Caio</strong><br>Confirmado. Preciso de 2 minutos para liberar passagem.</div>
-        <div class="message me"><strong>Você</strong><br>Ok, vou avisar Som e Luz pelo alerta.</div>
+        <div class="chat-content">
+          <h1>Palco</h1>
+          <p>Canal em tempo real · 6 pessoas online</p>
+          <div class="offline">Mensagens salvas offline e sincronizadas depois.</div>
+          <div class="message"><strong>Leo</strong><br>Bateria reserva já está do lado esquerdo do palco.</div>
+          <div class="message me"><strong>Você</strong><br>Confirma troca logo depois da próxima cue?</div>
+          <div class="message"><strong>Caio</strong><br>Confirmado. Preciso de 2 minutos para liberar passagem.</div>
+          <div class="message me"><strong>Você</strong><br>Ok, vou avisar Som e Luz pelo alerta.</div>
+        </div>
         <div class="composer">
           <div class="field">Escrever mensagem...</div>
           <button class="btn">Enviar</button>
@@ -669,11 +690,13 @@
 
       <section class="screen with-back chat-thread" id="chat-private">
         <button class="back" data-go="chat">← Voltar</button>
-        <h1>Ana · Luz</h1>
-        <p>Conversa privada · online agora</p>
-        <div class="message"><strong>Ana</strong><br>Cena 1 está pronta, mas preciso validar o blackout.</div>
-        <div class="message me"><strong>Você</strong><br>Valida agora e me confirma antes da entrada da banda?</div>
-        <div class="message"><strong>Ana</strong><br>Fechado. Te respondo em 2 minutos.</div>
+        <div class="chat-content">
+          <h1>Ana · Luz</h1>
+          <p>Conversa privada · online agora</p>
+          <div class="message"><strong>Ana</strong><br>Cena 1 está pronta, mas preciso validar o blackout.</div>
+          <div class="message me"><strong>Você</strong><br>Valida agora e me confirma antes da entrada da banda?</div>
+          <div class="message"><strong>Ana</strong><br>Fechado. Te respondo em 2 minutos.</div>
+        </div>
         <div class="composer">
           <div class="field">Escrever mensagem...</div>
           <button class="btn">Enviar</button>
