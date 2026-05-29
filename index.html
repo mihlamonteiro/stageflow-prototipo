@@ -222,6 +222,11 @@
       margin-top: 14px;
     }
 
+    .grid .card {
+      min-height: 118px;
+      padding-top: 50px;
+    }
+
     .grid .card h3,
     .grid .card p {
       padding-right: 0;
@@ -385,14 +390,20 @@
       background: #eefafa;
     }
 
+    .chat-thread {
+      padding-bottom: 130px;
+    }
+
     .composer {
       position: absolute;
       left: 24px;
       right: 24px;
-      bottom: 96px;
+      bottom: 24px;
       display: grid;
-      grid-template-columns: 1fr 48px;
+      grid-template-columns: minmax(0, 1fr) 64px;
       gap: 10px;
+      padding-top: 12px;
+      background: white;
     }
 
     .composer .field {
@@ -641,7 +652,7 @@
         <nav-bar active="chat"></nav-bar>
       </section>
 
-      <section class="screen with-back" id="chat-room">
+      <section class="screen with-back chat-thread" id="chat-room">
         <button class="back" data-go="chat">← Voltar</button>
         <h1>Palco</h1>
         <p>Canal em tempo real · 6 pessoas online</p>
@@ -656,7 +667,7 @@
         </div>
       </section>
 
-      <section class="screen with-back" id="chat-private">
+      <section class="screen with-back chat-thread" id="chat-private">
         <button class="back" data-go="chat">← Voltar</button>
         <h1>Ana · Luz</h1>
         <p>Conversa privada · online agora</p>
